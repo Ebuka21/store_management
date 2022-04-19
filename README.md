@@ -1,6 +1,14 @@
 # store_management
 
+<p>
+This project involves interation done at a store and managing it. Several actions will be done with the combination of Python, PostgreSQL and Analysis
+</p>
 
+<ol>
+<li> <b>PostgreSQL</b> - This will store all the data for the store including the inventory, price, customer information</li>
+<li> <b>Python</b> - All functions and interactions will be scripted using python as well as a connection to the database to update it continuously</li>
+<li> <b>Analysis</b> - With the use of pandas, mathplotlib and django/flask, the summary of the days purchase and other analysis will be displayed</li>
+</ol>
 ### Functions created and their purpose
 
 #### Auto purchase
