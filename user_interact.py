@@ -39,7 +39,22 @@ class user_class:
         self.food_list = [ 'Egg','Bread','Indomie','Butter','Milk','Sugar']
         self.household_list = ['Chair','Table','fan']
 
+    def display(self):
+        print(
+            """
+        Below are the prices of our items in stock
 
+        Egg     --> 90
+        Bread   --> 500
+        Indomie --> 100
+        Butter  --> 800
+        Milk    --> 1400
+        Sugar   --> 200
+        Chair   --> 15000
+        Table   --> 20000
+        fan     --> 17000
+        """
+        )
 
     def pre_check(self,item, count):
         c = 0
@@ -104,7 +119,7 @@ class user_class:
     def main(self):
         print("Hello Welcome esteemed customer to our store \n")
 
-        print(display)
+        self.display()
 
         print("\n")
 
