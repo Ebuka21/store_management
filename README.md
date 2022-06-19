@@ -8,6 +8,7 @@ This project involves interation done at a store and managing it. Several action
 <li> <b>PostgreSQL</b> - This will store all the data for the store including the inventory, price, customer information</li>
 <li> <b>Python</b> - All functions and interactions will be scripted using python as well as a connection to the database to update it continuously</li>
 <li> <b>Analysis</b> - With the use of pandas, mathplotlib and django/flask, the summary of the days purchase and other analysis will be displayed</li>
+<li> <b>Django</b> - this will be the web interface for showcasing the statistics of the store; can later be implemented to be the web interface for purchasing the items</li>
 </ol>
 ### Functions created and their purpose
 
@@ -35,10 +36,25 @@ new_item_purchase - this function will be able to detect the category of the ite
 
 #### User input
 
-<li>user_interact</li>
-<li>user_purchase</li>
-<li>update_stock</li>
-<li>check_store</li>
-<li>pre_check_store</li>
-<li>user_int</li>
-<li>pre_check_s</li>
+<li>
+user_int - function obtain what the customer wants to purchase and saves the information to a dictionary
+</li>
+
+<li>
+pre_check - in the process of the customer making a purchase, this checks if the item is still available
+</li>
+
+<li>
+user_purchase - this uses the customers input to compute the total price of an item purchased and obtain what category the item falls under
+</li>
+
+<li>
+update_stock - this will update the stock dictionary based on what has been purchased
+</li>
+
+<li>
+check_store - this checks the stock dictionary and triggers if the amount certain items are below 5 or 10 so it can be restocked
+</li>
+
+
+
