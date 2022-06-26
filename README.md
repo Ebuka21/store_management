@@ -10,7 +10,8 @@ This project involves interation done at a store and managing it. Several action
 <li> <b>Analysis</b> - With the use of pandas, mathplotlib and django/flask, the summary of the days purchase and other analysis will be displayed</li>
 <li> <b>Django</b> - this will be the web interface for showcasing the statistics of the store; can later be implemented to be the web interface for purchasing the items</li>
 </ol>
-### Functions created and their purpose
+
+### <u>Functions created and their purpose</u>
 
 #### Auto purchase
 
@@ -56,5 +57,12 @@ update_stock - this will update the stock dictionary based on what has been purc
 check_store - this checks the stock dictionary and triggers if the amount certain items are below 5 or 10 so it can be restocked
 </li>
 
+### <u>Database Tables</u>
+
+<ol>category</ol>
+<t><li>categorykey</li></t>
+
+<ol>product</ol>
+<t></t>
 
 
