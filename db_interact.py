@@ -45,10 +45,26 @@ class pg_db:
         print('new sql query')
         print(self.cur.fetchall())
         
-        self.pg_connect('close')
+        #self.pg_connect('close')
 
-    def insert_purchase(self):
+    def insert_purchase(self,purchase):
         #this function will add the purchase made to the database table
+        for x in purchase:
+            item = x
+            quantity = purchase[x]['amount']
+            category = purchase[x]['category']
+            price = purchase[x]['price']
+
+            query = f"""
+            INSERT INTO test_purchase(product,quantity,pk)
+            VALUES('{item}',{quantity},1)
+            """
+
+            self.cur.execute(query)
+
+            self.link.commit()
+
+            print('it is done')
         pass
     
     def stock_check(self):
