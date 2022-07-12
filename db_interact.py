@@ -89,4 +89,7 @@ class pg_db:
     
     def view(self):
         #this function will return a view created in the database
-        pass
+        self.cur.execute('REFRESH MATERIALIZED VIEW test1_view;')
+        self.cur.execute('SELECT * FROM test1_view')
+        info = self.cur.fetchall()
+        return info
