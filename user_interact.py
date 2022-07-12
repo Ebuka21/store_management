@@ -1,6 +1,8 @@
 """
 User class: Interaction with customer concerning what they want to purchase and the amount
 """
+import db_interact
+from db_interact import pg_db
 
 class user_class:
 
@@ -102,6 +104,9 @@ class user_class:
         #self.household_list = ['Chair','Kettle','Iron','Blender','Rechargeable Fan','Extension','Table']
         #self.cloth
 
+        self.db = pg_db()
+        self.db.pg_connect('connect')
+
     def display(self):
         print(
             """
@@ -137,6 +142,7 @@ class user_class:
         )
 
     def pre_check(self,item, count):
+        #check the item
         c = 0
         if item in self.stock_count and count > self.stock_count[item]:
             print("sorry we only have " + str(stock[y][item]) + " " + item + " left in stock")
@@ -148,25 +154,29 @@ class user_class:
 
     def user_int(self):
         #purchased = self.purchased
-        item = int(input("What would you like to buy, select an item number: "))
+        key = int(input("What would you like to buy, select an item number: "))
         amount = int(input("How many: "))
-        item_name = self.productkey[item]
-        check = self.pre_check(item_name,amount)
+        item = self.productkey[key]
+        #check = self.pre_check(item,amount)
+        check = self.db.stock_check(key,amount)
+
 
         if check == 0:
             #check if the item has been purchased before
             if item not in self.purchased:
-                self.purchased[item_name] = {}
-                self.purchased[item_name]['amount'] = amount
+                self.purchased[item] = {}
+                self.purchased[item]['amount'] = amount
+                self.purchased[item]['key'] = key
             #if it has been purchased already then simply increase the amount purchased by the number customer provides
-            elif item  in self.purchased:
-                self.purchased[item_name]['amount'] += amount
+            elif item in self.purchased:
+                self.purchased[item]['amount'] += amount
+            self.db.procedure(key,amount)
         
         else:
             print("returning")
             print(self.purchased)
             user_class.user_int(self)
-
+        
         return self.purchased
 
     def user_purchase(self,purchased):
@@ -219,8 +229,8 @@ class user_class:
 
                 #cont = pre_check_store(stock_count,purchase)
                 
-                
                 buy = self.user_purchase(purchase)
+                
                 #find out if they want to continue shopping
                 ask = input("Would you like to continue shopping: ")
                 if ask == 'yes':
@@ -228,6 +238,7 @@ class user_class:
                 else:
                     #break the loop at this point
                     ask = False
+                    self.db.insert_purchase(buy)
                     print(buy)
                     stock_count = self.update_stock(self.stock_count, self.purchased)
                     self.check_store(self.stock_count)
@@ -237,6 +248,7 @@ class user_class:
                      
         elif ask == 'no':
             print("Thank you for visiting with us")
+            self.db.pg_connect('close')
 
         else:
             print('Sorry that is a wrong input, please choose yes or no')

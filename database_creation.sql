@@ -56,6 +56,14 @@ UPDATE product
 SET quantity = quantity - (SELECT quantity FROM test_purchase WHERE product = item)
 WHERE productname = item;$$
 
+DROP PROCEDURE product_update;
+CREATE PROCEDURE product_update(num INT)
+LANGUAGE SQL
+AS $$
+UPDATE product
+SET quantity = quantity - (SELECT quantity FROM test_purchase ORDER BY id DESC LIMIT 1)
+WHERE productkey = num;$$
+
 CALL update_product('Indomie');
 
 

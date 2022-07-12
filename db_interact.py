@@ -3,6 +3,8 @@ script will interact with the db. Making the necessary changes and retriving inf
 '''
 import psycopg2
 import pandas as pd
+from datetime import datetime
+
 
 class pg_db:
 
@@ -10,6 +12,7 @@ class pg_db:
         self.link = ''
         self.cur = ''
 
+    #function will enable connection to database and close it as well
     def pg_connect(self,status):
 
         #global link 
@@ -31,49 +34,58 @@ class pg_db:
             stat = input('status code incorrect please select either connect or stop: ')
             self.pg_connect(stat)
 
+    #quick test run function to ensure that there is connection to DB
     def test_run(self):
         
         self.cur.execute('SELECT version()')
         print(self.cur.fetchone())
 
-        retrieve_com = """
-        SELECT * 
-        FROM category
-        """
-
-        self.cur.execute(retrieve_com)
-        print('new sql query')
-        print(self.cur.fetchall())
-        
-        #self.pg_connect('close')
-
+    
     def insert_purchase(self,purchase):
         #this function will add the purchase made to the database table
+
+        format1 ='%Y-%m-%d'
+
+        date = datetime.date(datetime.now())
+        
         for x in purchase:
             item = x
             quantity = purchase[x]['amount']
             category = purchase[x]['category']
             price = purchase[x]['price']
+            key = purchase[x]['key']
 
             query = f"""
             INSERT INTO test_purchase(product,quantity,pk)
-            VALUES('{item}',{quantity},1)
+            VALUES('{item}',{quantity},{key})
             """
-
+            #self.procedure(key)
+            
             self.cur.execute(query)
 
             self.link.commit()
 
             print('it is done')
-        pass
     
-    def stock_check(self):
+    def stock_check(self,key,count):
         #this function will check the store and confirm if the item is available or exists
-        pass
+        query = f"""
+        SELECT quantity
+        FROM product
+        WHERE productkey = {key}
+        """
+        self.cur.execute(query)
+        amount = self.cur.fetchone()
+        print(amount[0])
 
-    def procedure(self):
+        if count <= amount[0]:
+            return 0
+        else:
+            return 1
+
+    def procedure(self,pk,amount):
         #this function will execute the stored procedure/function within the database
-        pass
+        self.cur.execute(f'CALL product_update({pk},{amount})')
     
     def view(self):
         #this function will return a view created in the database
