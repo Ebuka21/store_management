@@ -57,6 +57,8 @@ update_stock - this will update the stock dictionary based on what has been purc
 check_store - this checks the stock dictionary and triggers if the amount certain items are below 5 or 10 so it can be restocked
 </li>
 
+
+
 ### <u>Database Tables</u>
 
 <ol>category</ol>

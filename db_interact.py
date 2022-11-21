@@ -1,5 +1,5 @@
 '''
-script will interact with the db. Making the necessary changes and retriving information from it
+script will interact with the db (PostgreSQL in particular). Making the necessary changes and retriving information from it
 '''
 import psycopg2
 import pandas as pd
@@ -34,13 +34,32 @@ class pg_db:
             stat = input('status code incorrect please select either connect or stop: ')
             self.pg_connect(stat)
 
+
     #quick test run function to ensure that there is connection to DB
     def test_run(self):
-        
         self.cur.execute('SELECT version()')
         print(self.cur.fetchone())
 
     
+    def procedure(self,pk,amount):
+        #this function will execute the stored procedure/function within the database
+        self.cur.execute(f'CALL product_update({pk},{amount})')
+    
+
+    def view(self):
+        #this function will return a view created in the database
+        self.cur.execute('REFRESH MATERIALIZED VIEW test1_view;')
+        self.cur.execute('SELECT * FROM test1_view')
+        info = self.cur.fetchall()
+        return info
+    
+
+    def run_query(self,query):
+        #this function will run any query passed into it and return the output
+        self.cur.execute(query)
+        return self.cur.fetchall()
+    
+
     def insert_purchase(self,purchase):
         #this function will add the purchase made to the database table
 
@@ -67,6 +86,7 @@ class pg_db:
 
             print('it is done')
     
+
     def stock_check(self,key,count):
         #this function will check the store and confirm if the item is available or exists
         query = f"""
@@ -83,13 +103,4 @@ class pg_db:
         else:
             return 1
 
-    def procedure(self,pk,amount):
-        #this function will execute the stored procedure/function within the database
-        self.cur.execute(f'CALL product_update({pk},{amount})')
     
-    def view(self):
-        #this function will return a view created in the database
-        self.cur.execute('REFRESH MATERIALIZED VIEW test1_view;')
-        self.cur.execute('SELECT * FROM test1_view')
-        info = self.cur.fetchall()
-        return info

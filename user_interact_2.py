@@ -1,114 +1,53 @@
 """
 User class: Interaction with customer concerning what they want to purchase and the amount
 """
+import pandas as pd
 import db_interact
 from db_interact import pg_db
 
 class user_class:
 
     def __init__(self, purchased={}):
-
+        stockcountquery = 'SELECT productname, quantity FROM product'
+        productkeyquery = 'SELECT productkey,productname FROM product'
+        foodquery = 'SELECT productname,price FROM product WHERE categorykey=1'
+        householdquery = 'SELECT productname,price FROM product WHERE categorykey=2'
+        clothquery = 'SELECT productname,price FROM product WHERE categorykey=3'
+        
         self.db = pg_db()
         self.db.pg_connect('connect')
         
     #def stock_price_number(self):
-        self.stock_count = {
-                'Egg':1000,
-                'Indomie':1000,
-                'Bread':500,
-                'Butter':1000,
-                'Milk':1000,
-                'Sugar':1000,
-                'Salt':1000,
-                'Spagetti':1000,
-                'Chin-chin':2000,
-                'Biscuit':2000,
-                'Chair':50,
-                'Kettle':50,
-                'Iron':50,
-                'Blender':50,
-                'Rechargeable fan':25,
-                'Fan': 25,
-                'Extension':50,
-                'Table': 25,
-                'Shirt':100,
-                'Polo shirt':100,
-                'Trousers':100,
-                'Chinos':100,
-                'Skirt':100,
-                'Jeans':100,
-                'Blouse':100
-            }
+        self.stock_count = pd.DataFrame(self.db.run_query(stockcountquery), columns=['productname','quantity'])
+        self.stock_count.set_index('productname',inplace=True)
+        self.stock_count = self.stock_count.to_dict()['quantity']
 
-        self.productkey = {
-            1:'Egg',
-            2:'Indomie',
-            3:'Bread',
-            4:'Butter',
-            5:'Milk',
-            6:'Sugar',
-            7:'Salt',
-            8:'Spagetti',
-            9:'Chin-chin',
-            10:'Biscuit',
-            11:'Chair',
-            12:'Kettle',
-            13:'Iron',
-            14:'Blender',
-            15:'Rechargeable Fan',
-            16:'Fan',
-            17:'Extension',
-            18:'Table',
-            19:'Shirt',
-            20:'Polo shirt',
-            21:'Trousers',
-            22:'Chinos',
-            23:'Skirt',
-            24:'Jeans',
-            25:'Blouse'
-        }
+        self.productkey = pd.DataFrame(self.db.run_query(productkeyquery), columns=['productkey','productname'])
+        self.productkey.set_index('productkey',inplace=True)
+        self.productkey = self.productkey.to_dict()['productname']
 
+        self.food = pd.DataFrame(self.db.run_query(foodquery), columns=['productname','price'])
+        self.food.set_index('productname',inplace=True)
+        self.food = self.food.to_dict()['price']
+
+        self.household = pd.DataFrame(self.db.run_query(householdquery), columns=['productname','price'])
+        self.household.set_index('productname',inplace=True)
+        self.household = self.household.to_dict()['price']
+
+        self.clothes = pd.DataFrame(self.db.run_query(clothquery), columns=['productname','price'])
+        self.clothes.set_index('productname',inplace=True)
+        self.clothes = self.clothes.to_dict()['price']
+
+
+        
         self.stock_price = {
-            'food':{
-                'Egg':90,
-                'Indomie':100,
-                'Bread':500,
-                'Butter':400,
-                'Milk':1400,
-                'Sugar':200,
-                'Salt':200,
-                'Spagetti':400,
-                'Chin-chin':100,
-                'Biscuit':1000
-            },
-            'household':{
-                'Chair':15000,
-                'Kettle':3000,
-                'Iron':400,
-                'Blender':12000,
-                'Rechargeable fan':23000,
-                'Fan': 15000,
-                'Extension':800,
-                'Table': 20000
-            },
-            'clothes':{
-                'Shirt':2000,
-                'Polo shirt':4000,
-                'Trousers':5000,
-                'Chinos':5000,
-                'Skirt':4000,
-                'Jeans':7000,
-                'Blouse':7000
-            }
+            'food':self.food,
+            'household':self.household,
+            'clothes':self.clothes
         }
 
         self.purchased = purchased
-        #self.food_list = [ 'Egg','Indomie','Bread','Butter','Milk','Sugar','Salt','Spagetti','Chin-chin','Biscuit']
-        #self.household_list = ['Chair','Kettle','Iron','Blender','Rechargeable Fan','Extension','Table']
-        #self.cloth
 
-        self.db = pg_db()
-        self.db.pg_connect('connect')
 
     def display(self):
         print(
