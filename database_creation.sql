@@ -77,6 +77,15 @@ WITH DATA;
 
 REFRESH MATERIALIZED VIEW test_view;
 
+CREATE MATERIALIZED VIEW test2_view
+AS
+    SELECT t.pk,t.date,t.product,t.quantity,p.price,(t.quantity*p.price) AS total
+    FROM test_purchase t, product p
+    WHERE t.pk = p.productkey
+WITH DATA;
+
+REFRESH MATERIALIZED VIEW test2_view;
+
 SELECT * FROM test_view;
 
 

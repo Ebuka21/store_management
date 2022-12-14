@@ -46,10 +46,10 @@ class pg_db:
         self.cur.execute(f'CALL product_update({pk},{amount})')
     
 
-    def view(self):
+    def view(self,view):
         #this function will return a view created in the database
-        self.cur.execute('REFRESH MATERIALIZED VIEW test1_view;')
-        self.cur.execute('SELECT * FROM test1_view')
+        self.cur.execute(f'REFRESH MATERIALIZED VIEW {view};')
+        self.cur.execute(f'SELECT * FROM {view}')
         info = self.cur.fetchall()
         return info
     

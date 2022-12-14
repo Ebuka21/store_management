@@ -153,16 +153,17 @@ class user_class:
             if stock[x] <= 10:
                 print("URGENT: " + x + " is low in stock")
 
-    def main(self):
+    def intro(self):
         print("Hello Welcome esteemed customer to our store \n")
-
         self.display()
-
         print("\n")
 
+
+    def main(self):
+        
         ask = input("Do you want to purchase anything: ")
 
-        if ask == 'yes':
+        if ask.lower() == 'yes':
             #purchased = {}
             #loop will enable customer to continuosly state what they want to buy
             while ask:
@@ -188,7 +189,7 @@ class user_class:
                     print(self.stock_count)
                 
                      
-        elif ask == 'no':
+        elif ask.lower() == 'no':
             print("Thank you for visiting with us")
             self.db.pg_connect('close')
 
